@@ -21,7 +21,8 @@ The app serves as a monitoring tool that alerts users to specific price levels o
 
 ##### [Test it out here][demo]
 
-#### ✅ Telegram bot
+
+#### ✅ Notifications Telegram bot
 
 - Sending to Telegram
 
