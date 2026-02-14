@@ -1,8 +1,8 @@
 {
-  "name": "binance-watch",
+  "name": "binance-app",
   "description": "Webapp client for watching price action on Binance.",
   "version": "1.0.0",
-  "author": "Rainner Lins <rainnerlins@gmail.com>",
+  "author": "Mscbuild <mscbuild.io>",
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --hot",
