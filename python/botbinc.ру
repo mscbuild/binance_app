@@ -1,0 +1,75 @@
+import asyncio
+import json
+import websockets
+import aiohttp
+from datetime import datetime, timedelta
+
+# ====== SETTINGS ======
+BOT_TOKEN = "YOUR_BOT_TOKEN"
+CHAT_ID = "YOUR_CHAT_ID"
+
+ALERT_COOLDOWN = timedelta(minutes=10)
+THRESHOLD_PERCENT = 3.0
+# =======================
+
+last_alerts = {}
+
+async def send_telegram_message(text):
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    payload = {
+        "chat_id": CHAT_ID,
+        "text": text,
+        "parse_mode": "HTML"
+    }
+
+    async with aiohttp.ClientSession() as session:
+        await session.post(url, data=payload)
+
+
+async def monitor_usdt_pairs():
+    url = "wss://stream.binance.com:9443/ws/!ticker@arr"
+    print(f"🚀 Monitoring has been launched (threshold: {THRESHOLD_PERCENT}%)")
+
+    while True:
+        try:
+            async with websockets.connect(url, ping_interval=20) as websocket:
+                while True:
+                    message = await websocket.recv()
+                    data = json.loads(message)
+
+                    for ticker in data:
+                        symbol = ticker['s']
+
+                        if symbol.endswith('USDT'):
+                            change_percent = float(ticker['P'])
+                            last_price = float(ticker['c'])
+
+                            if abs(change_percent) >= THRESHOLD_PERCENT:
+                                now = datetime.now()
+
+                                if symbol not in last_alerts or (now - last_alerts[symbol]) > ALERT_COOLDOWN:
+
+                                    direction = "📈 <b>Height</b>" if change_percent > 0 else "📉 <b>Fall</b>"
+
+                                    text = (
+                                        f"<b>{symbol}</b>\n"
+                                        f"{direction}: {change_percent}%\n"
+                                        f"Цена: {last_price}\n"
+                                        f"Время: {now.strftime('%H:%M:%S')}"
+                                    )
+
+                                    await send_telegram_message(text)
+
+                                    last_alerts[symbol] = now
+                                    print(f"[{now.strftime('%H:%M:%S')}] 🔔 {symbol} {change_percent}%")
+
+        except Exception as e:
+            print("❌ Connection error. Reconnecting in 5 seconds...", e)
+            await asyncio.sleep(5)
+
+
+if __name__ == "__main__":
+    try:
+        asyncio.run(monitor_usdt_pairs())
+    except KeyboardInterrupt:
+        print("⛔ Monitoring has been stopped.")
