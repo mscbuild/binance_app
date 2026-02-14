@@ -21,6 +21,16 @@ The app serves as a monitoring tool that alerts users to specific price levels o
 
 ##### [Test it out here][demo]
 
+✅ Telegram bot
+
+- Sending to Telegram
+
+- Automatic reconnection
+
+- Spam protection (cooldown)
+
+- Beautiful formatting
+
  
 ### License
 
