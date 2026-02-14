@@ -6,7 +6,8 @@
 
 # Binance Price Watch Web-App
 
-![Binnace-Watch](https://raw.githubusercontent.com/rainner/binance_app/master/thumb.jpg)
+<img width="1351" height="470" alt="23" src="https://github.com/user-attachments/assets/7361294b-efe5-4757-a225-875e4888f54a" />
+
 
 This application connects to the Binance.com public API to get live 24h price change data for all crypto trading pairs on their platform and allows you to set custom alerts or watch for price change in real time and get desktop notifications when something triggers your alerts or price watch settings.
 
