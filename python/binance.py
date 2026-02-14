@@ -11,7 +11,7 @@ ALERT_COOLDOWN = timedelta(minutes=10)  # Repeated notification no earlier than 
 THRESHOLD_PERCENT = 3.0                 # Response threshold in percent
 
 async def monitor_usdt_pairs():
-    url = "wss://://stream.binance.com"
+    url = "wss://stream.binance.com:9443/ws/!ticker@arr"
     print(f"🚀 USDT pair monitoring has been launched. (threshold: {THRESHOLD_PERCENT}%)")
 
     try:
